@@ -17,7 +17,7 @@ options.headless = True
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-def get_transaction_count(address):
+def get_address_data(address):
     url = f"https://artio.beratrail.io/address/{address}"
     driver.get(url)
     try:
@@ -26,10 +26,15 @@ def get_transaction_count(address):
         )
         time.sleep(2)
         transaction_count_element = driver.find_element(By.CSS_SELECTOR, "span.badge.badge-pill.badge-secondary")
-        return transaction_count_element.text.strip()
+        transactions = transaction_count_element.text.strip()
+
+        balance_element = driver.find_element(By.CSS_SELECTOR, "#address > div > div > div.custom-container > div > div:nth-child(1) > div > div.card-body > div.grid.grid-cols-12.items-center > div.col-span-12.md\\:col-span-8 > span")
+        balance = balance_element.text.strip()
+
+        return transactions, balance
     except Exception as e:
         print(e)
-        return "Element not found or error"
+        return "Element not found or error", "Element not found or error"
 
 print_ascii_art()
 
