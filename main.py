@@ -17,11 +17,7 @@ options.headless = True
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-<<<<<<< HEAD
-def get_address_data(address):
-=======
 def get_transaction_count(address):
->>>>>>> 219bb487d5e9ba9caf78aac81fe4eb7b9fae3e89
     url = f"https://artio.beratrail.io/address/{address}"
     driver.get(url)
     try:
@@ -30,22 +26,10 @@ def get_transaction_count(address):
         )
         time.sleep(2)
         transaction_count_element = driver.find_element(By.CSS_SELECTOR, "span.badge.badge-pill.badge-secondary")
-<<<<<<< HEAD
-        transactions = transaction_count_element.text.strip()
-
-        balance_element = driver.find_element(By.CSS_SELECTOR, "#address > div > div > div.custom-container > div > div:nth-child(1) > div > div.card-body > div.grid.grid-cols-12.items-center > div.col-span-12.md\\:col-span-8 > span")
-        balance = balance_element.text.strip()
-
-        return transactions, balance
-    except Exception as e:
-        print(e)
-        return "Element not found or error", "Element not found or error"
-=======
         return transaction_count_element.text.strip()
     except Exception as e:
         print(e)
         return "Element not found or error"
->>>>>>> 219bb487d5e9ba9caf78aac81fe4eb7b9fae3e89
 
 print_ascii_art()
 
@@ -53,31 +37,19 @@ with open('Address.txt', 'r') as file:
     addresses = file.read().splitlines()
 
 transactions = []
-<<<<<<< HEAD
 balances = []
 for address in addresses:
     log_scanning(address)
     transaction_count, balance = get_address_data(address)
     transactions.append(transaction_count)
     balances.append(balance)
-=======
-for address in addresses:
-    log_scanning(address)
-    transaction = get_transaction_count(address)
-    transactions.append(transaction)
->>>>>>> 219bb487d5e9ba9caf78aac81fe4eb7b9fae3e89
 
 driver.implicitly_wait(3)
 driver.quit()
 
-<<<<<<< HEAD
 df = pd.DataFrame({
     "Address": addresses,
     "Transactions": transactions,
     "Balance": balances
 })
 df.to_excel('address_data.xlsx', index=False)
-=======
-df = pd.DataFrame(list(zip(addresses, transactions)), columns=["Address", "Transactions"])
-df.to_excel('transactions.xlsx', index=False)
->>>>>>> 219bb487d5e9ba9caf78aac81fe4eb7b9fae3e89
